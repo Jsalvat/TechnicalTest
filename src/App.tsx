@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import SquareComponent from './Components/Square';
+
+export interface Square {
+  row: number;
+  col: number;
+  active: boolean;
+}
 
 function App() {
   const [createdGrid, setCreatedGrid] = useState<Square[][] | undefined>();
-
-  interface Square {
-    row: number;
-    col: number;
-    active: boolean;
-  }
 
   useEffect(() => {
     setCreatedGrid(create(5, 5));
@@ -31,14 +32,11 @@ function App() {
     <div className="appContainer">
       {createdGrid ? (
         createdGrid.map((e, eindex) => (
-          <span key={eindex}>
+          <div key={eindex}>
             {e.map((f, findex) => (
-              <div className="square" key={findex}>
-                {f.row}
-                {f.col}
-              </div>
+              <SquareComponent key={findex} data={f} />
             ))}
-          </span>
+          </div>
         ))
       ) : (
         <span>Loading</span>

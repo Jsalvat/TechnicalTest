@@ -1,0 +1,14 @@
+.squareContainer {
+  border: 1px solid white;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+
+  &.active {
+    background: green;
+  }
+
+  &.inactive {
+    background: red;
+  }
+}
