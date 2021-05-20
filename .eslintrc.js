@@ -8,8 +8,7 @@ module.exports = {
   // y por ultimo, en la llave de "plugins" añade el plugin de eslint para prettier
   plugins: ['prettier'],
   rules: {
-    code: 2,
-    useTabs: false,
+    code: 0,
     'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     indent: 'off',
     allowTemplateLiterals: 'off',
