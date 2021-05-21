@@ -10,7 +10,8 @@ export interface Square {
 
 function App() {
   const [createdGrid, setCreatedGrid] = useState<Square[][] | undefined>();
-  const [initial, setInitial] = useState<{ row: Number; col: number }>();
+  const [initialSquare, setInitialSquare] = useState<{ row: Number; col: number }>();
+  const [ongoingSquare, setOngoingSquare] = useState<{ row: Number; col: number }>();
   const [dragMode, setDragMode] = useState<boolean>(false);
 
   useEffect(() => {
@@ -18,8 +19,8 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log(initial);
-  }, [initial]);
+    console.log(initialSquare);
+  }, [initialSquare]);
 
   const create = (x: number, y: number) => {
     const grid: Square[][] = [];
@@ -34,22 +35,57 @@ function App() {
 
   const handleStarterPoint = (initSquare: { row: number; col: number }) => {
     setDragMode(true);
-    setInitial(initSquare);
+    console.log(initSquare, 'initSquare');
+    setInitialSquare(initSquare);
   };
+
+  const handleOngoingPoint = (ongoingSquare: { row: number; col: number }) => {
+    if (dragMode === true) {
+      console.log(ongoingSquare, 'ongoingSquare');
+      setOngoingSquare(ongoingSquare);
+      if (initialSquare && initialSquare.col <= 2) {
+        console.log('petita');
+      } else {
+        console.log('gran');
+      }
+    }
+  };
+  const handleFinalPoint = (finalSquare: { row: number; col: number }) => {
+    console.log(finalSquare);
+    setDragMode(false);
+  };
+
+  const handleOnClick = (clickedSquare: { row: number; col: number }) => {
+    if (createdGrid) {
+      let foundIndex: number | undefined = createdGrid[clickedSquare.row].findIndex(
+        (x) => x.row == clickedSquare.row && x.col === clickedSquare.col
+      );
+      let tempCreatedGrid = createdGrid.slice();
+      tempCreatedGrid[clickedSquare.row][foundIndex!].active =
+        !tempCreatedGrid[clickedSquare.row][foundIndex!].active;
+      setCreatedGrid(tempCreatedGrid);
+    }
+  };
+
+  console.log(createdGrid);
 
   return (
     <div className="appContainer">
-      {createdGrid ? (
+      {createdGrid &&
         createdGrid.map((e, eindex) => (
           <div key={eindex}>
             {e.map((f, findex) => (
-              <SquareComponent handleStarterPoint={handleStarterPoint} key={findex} data={f} />
+              <SquareComponent
+                handleOnClick={handleOnClick}
+                handleOngoingPoint={handleOngoingPoint}
+                handleStarterPoint={handleStarterPoint}
+                handleFinalPoint={handleFinalPoint}
+                key={findex}
+                data={f}
+              />
             ))}
           </div>
-        ))
-      ) : (
-        <span>Loading</span>
-      )}
+        ))}
     </div>
   );
 }

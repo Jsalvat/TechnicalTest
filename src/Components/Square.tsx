@@ -6,19 +6,23 @@ import { useLongPress } from 'react-use';
 interface SquareProps {
   data: Square;
   handleStarterPoint: (initial: { row: number; col: number }) => void;
+  handleOngoingPoint: (point: { row: number; col: number }) => void;
+  handleOnClick: (point: { row: number; col: number }) => void;
+  handleFinalPoint: (point: { row: number; col: number }) => void;
 }
 
-const SquareComponent: React.FC<SquareProps> = ({ data, handleStarterPoint }) => {
-  const [isActive, setIsActive] = useState(false);
+const SquareComponent: React.FC<SquareProps> = ({
+  data,
+  handleStarterPoint,
+  handleOngoingPoint,
+  handleOnClick,
+  handleFinalPoint,
+}) => {
   const { row, col, active } = data;
-
-  useEffect(() => {
-    active ? setIsActive(true) : setIsActive(false);
-  }, [active]);
 
   const defaultOptions = {
     isPreventDefault: true,
-    delay: 2000,
+    delay: 1000,
   };
 
   const starterPoint = () => {
@@ -30,11 +34,10 @@ const SquareComponent: React.FC<SquareProps> = ({ data, handleStarterPoint }) =>
   return (
     <div
       {...longPressEvent}
-      onClick={() => {
-        setIsActive(!isActive);
-      }}
-      onMouseOver={() => console.log(row, 'hovering')}
-      className={`${styles.squareContainer} ${isActive ? styles.active : styles.inactive}`}
+      onClick={() => handleOnClick({ row, col })}
+      onMouseOver={() => handleOngoingPoint({ row, col })}
+      onMouseUp={() => handleFinalPoint({ row, col })}
+      className={`${styles.squareContainer} ${active ? styles.active : styles.inactive}`}
     />
   );
 };
