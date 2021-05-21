@@ -18,7 +18,7 @@ const SquareComponent: React.FC<SquareProps> = ({
   handleOnClick,
   handleFinalPoint,
 }) => {
-  const { row, col, active } = data;
+  const { row, col, active, softActive } = data;
 
   const defaultOptions = {
     isPreventDefault: true,
@@ -37,7 +37,9 @@ const SquareComponent: React.FC<SquareProps> = ({
       onClick={() => handleOnClick({ row, col })}
       onMouseOver={() => handleOngoingPoint({ row, col })}
       onMouseUp={() => handleFinalPoint({ row, col })}
-      className={`${styles.squareContainer} ${active ? styles.active : styles.inactive}`}
+      className={`${styles.squareContainer} ${softActive ? styles.softActive : ''} ${
+        active ? styles.active : styles.inactive
+      }`}
     />
   );
 };
