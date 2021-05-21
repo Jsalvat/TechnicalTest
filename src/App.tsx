@@ -14,6 +14,7 @@ function App() {
   const [initialSquare, setInitialSquare] = useState<{ row: number; col: number }>();
   const [ongoingSquare, setOngoingSquare] = useState<{ row: number; col: number }>();
   const [dragMode, setDragMode] = useState<boolean>(false);
+  const [initialActive, setInitialActive] = useState<boolean>(false);
 
   useEffect(() => {
     setCreatedGrid(create(5, 5));
@@ -30,8 +31,9 @@ function App() {
     return grid;
   };
 
-  const handleStarterPoint = (initSquare: { row: number; col: number }) => {
+  const handleStarterPoint = (initSquare: { row: number; col: number; active: boolean }) => {
     setInitialSquare(initSquare);
+    setInitialActive(initSquare.active);
     createdGrid?.map((e) =>
       e.map((f) => {
         if (f.col === initSquare?.col && f.row === initSquare?.row) {
@@ -66,12 +68,21 @@ function App() {
     }
   };
   const handleFinalPoint = (finalSquare: { row: number; col: number }) => {
-    console.log(finalSquare);
-    setDragMode(false);
+    if (dragMode == true) {
+      createdGrid?.map((e) =>
+        e.map((f) => {
+          if (f.softActive === true) {
+            f.softActive = false;
+            f.active = initialActive;
+          }
+        })
+      );
+      setDragMode(false);
+    }
   };
 
   const handleOnClick = (clickedSquare: { row: number; col: number }) => {
-    if (createdGrid) {
+    if (createdGrid && !dragMode) {
       let foundIndex: number | undefined = createdGrid[clickedSquare.row].findIndex(
         (x) => x.row == clickedSquare.row && x.col === clickedSquare.col
       );
@@ -97,6 +108,7 @@ function App() {
                 handleFinalPoint={handleFinalPoint}
                 key={findex}
                 data={f}
+                dragMode={dragMode}
               />
             ))}
           </div>

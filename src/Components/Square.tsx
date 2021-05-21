@@ -5,10 +5,11 @@ import { useLongPress } from 'react-use';
 
 interface SquareProps {
   data: Square;
-  handleStarterPoint: (initial: { row: number; col: number }) => void;
+  handleStarterPoint: (initial: { row: number; col: number; active: boolean }) => void;
   handleOngoingPoint: (point: { row: number; col: number }) => void;
   handleOnClick: (point: { row: number; col: number }) => void;
   handleFinalPoint: (point: { row: number; col: number }) => void;
+  dragMode: boolean;
 }
 
 const SquareComponent: React.FC<SquareProps> = ({
@@ -17,19 +18,21 @@ const SquareComponent: React.FC<SquareProps> = ({
   handleOngoingPoint,
   handleOnClick,
   handleFinalPoint,
+  dragMode,
 }) => {
   const { row, col, active, softActive } = data;
 
   const defaultOptions = {
-    isPreventDefault: true,
+    isPreventDefault: false,
     delay: 1000,
   };
 
   const starterPoint = () => {
-    handleStarterPoint({ row, col });
+    handleStarterPoint({ row, col, active });
+    console.log('longpress');
   };
 
-  const longPressEvent = useLongPress(starterPoint, defaultOptions);
+  const longPressEvent = !dragMode && useLongPress(starterPoint, defaultOptions);
 
   return (
     <div

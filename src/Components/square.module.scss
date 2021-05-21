@@ -5,11 +5,11 @@
   cursor: pointer;
 
   &.active {
-    background: green;
+    background: red;
   }
 
   &.inactive {
-    background: red;
+    background: green;
   }
 
   &.softActive {
