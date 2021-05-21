@@ -36,13 +36,13 @@ const SquareComponent: React.FC<SquareProps> = ({
 
   return (
     <div
-      {...longPressEvent}
       onClick={() => handleOnClick({ row, col })}
       onMouseOver={() => handleOngoingPoint({ row, col })}
       onMouseUp={() => handleFinalPoint({ row, col })}
       className={`${styles.squareContainer} ${softActive ? styles.softActive : ''} ${
         active ? styles.active : styles.inactive
       }`}
+      {...longPressEvent}
     />
   );
 };
