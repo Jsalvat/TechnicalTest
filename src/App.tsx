@@ -10,10 +10,16 @@ export interface Square {
 
 function App() {
   const [createdGrid, setCreatedGrid] = useState<Square[][] | undefined>();
+  const [initial, setInitial] = useState<{ row: Number; col: number }>();
+  const [dragMode, setDragMode] = useState<boolean>(false);
 
   useEffect(() => {
     setCreatedGrid(create(5, 5));
   }, []);
+
+  useEffect(() => {
+    console.log(initial);
+  }, [initial]);
 
   const create = (x: number, y: number) => {
     const grid: Square[][] = [];
@@ -26,7 +32,10 @@ function App() {
     return grid;
   };
 
-  console.log(createdGrid);
+  const handleStarterPoint = (initSquare: { row: number; col: number }) => {
+    setDragMode(true);
+    setInitial(initSquare);
+  };
 
   return (
     <div className="appContainer">
@@ -34,7 +43,7 @@ function App() {
         createdGrid.map((e, eindex) => (
           <div key={eindex}>
             {e.map((f, findex) => (
-              <SquareComponent key={findex} data={f} />
+              <SquareComponent handleStarterPoint={handleStarterPoint} key={findex} data={f} />
             ))}
           </div>
         ))
