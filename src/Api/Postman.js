@@ -1,10 +1,12 @@
-const ApiCall = (data) => {
+export const ApiCall = (data) => {
+  console.log(data);
   const requestOptions = {
     method: 'POST',
     mode: 'cors',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   };
+  console.log(requestOptions);
   const fetchedData = fetch('https://httpbin.org/post', requestOptions)
     .then(async (response) => {
       const isJson = response.headers.get('content-type')?.includes('application/json');

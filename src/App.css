@@ -36,10 +36,3 @@
     transform: rotate(360deg);
   }
 }
-
-.appContainer {
-  display: flex;
-  flex-wrap: wrap;
-  width: 510px;
-  margin: 100px auto;
-}

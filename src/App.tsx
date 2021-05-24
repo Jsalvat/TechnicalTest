@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import ApiCall from './Api/Postman';
 import './App.css';
 import SquareComponent, { SquareDataState } from './Components/Square';
+import { debounce } from './Hooks/debounce';
+import styles from './App.module.scss';
 
 export interface Square {
   row: number;
@@ -12,9 +15,11 @@ export interface Square {
 function App() {
   const [createdGrid, setCreatedGrid] = useState<Square[][] | undefined>();
   const [initialSquare, setInitialSquare] = useState<{ row: number; col: number }>();
-  const [ongoingSquare, setOngoingSquare] = useState<{ row: number; col: number }>();
   const [dragMode, setDragMode] = useState<boolean>(false);
   const [initialActive, setInitialActive] = useState<boolean>(false);
+  const [fireApiCall, setFireApiCall] = useState(false);
+  const [apiData, setApiData] = useState<Square[][] | undefined>();
+  const [show, setShow] = useState<boolean>(true);
 
   useEffect(() => {
     setCreatedGrid(create(5, 5));
@@ -50,7 +55,6 @@ function App() {
 
   const handleOngoingPoint = (ongoingSquare: { row: number; col: number }) => {
     if (dragMode === true && initialSquare) {
-      setOngoingSquare(ongoingSquare);
       createdGrid?.map((e) =>
         e.map((f) => {
           if (
@@ -77,6 +81,7 @@ function App() {
         })
       );
       setDragMode(false);
+      setFireApiCall(!fireApiCall);
     }
   };
 
@@ -89,6 +94,7 @@ function App() {
       tempCreatedGrid[clickedSquare.row][foundIndex!].active =
         !tempCreatedGrid[clickedSquare.row][foundIndex!].active;
       setCreatedGrid(tempCreatedGrid);
+      setFireApiCall(!fireApiCall);
     }
   };
 
@@ -103,34 +109,66 @@ function App() {
       );
       let tempCreatedGrid = createdGrid.slice();
       setCreatedGrid(tempCreatedGrid);
+      setFireApiCall(!fireApiCall);
     }
   };
 
-  const handleSquareDataState = (squareDataState: SquareDataState) => {
-    console.log(squareDataState);
-  };
+  useEffect(() => {
+    verify(createdGrid);
+  }, [fireApiCall]);
+
+  const verify = useCallback(
+    debounce(() => {
+      ApiCall(createdGrid).then((res) => setApiData(res.json));
+    }, 500),
+    [fireApiCall]
+  );
 
   return (
-    <div className="appContainer">
-      {createdGrid &&
-        createdGrid.map((e, eindex) => (
-          <div key={eindex}>
-            {e.map((f, findex) => (
-              <SquareComponent
-                handleOnClick={handleOnClick}
-                handleOngoingPoint={handleOngoingPoint}
-                handleStarterPoint={handleStarterPoint}
-                handleFinalPoint={handleFinalPoint}
-                handleDoubleClick={handleDoubleClick}
-                handleSquareDataState={handleSquareDataState}
-                key={findex}
-                data={f}
-                dragMode={dragMode}
-              />
-            ))}
+    <>
+      {!show && <button onClick={() => setShow(!show)}>Si</button>}
+      <div className={styles.appContainer}>
+        {createdGrid &&
+          createdGrid.map((e, eindex) => (
+            <div key={eindex}>
+              {e.map((f, findex) => (
+                <SquareComponent
+                  handleOnClick={handleOnClick}
+                  handleOngoingPoint={handleOngoingPoint}
+                  handleStarterPoint={handleStarterPoint}
+                  handleFinalPoint={handleFinalPoint}
+                  handleDoubleClick={handleDoubleClick}
+                  key={findex}
+                  data={f}
+                  dragMode={dragMode}
+                />
+              ))}
+            </div>
+          ))}
+        {apiData && show && (
+          <div className={styles.resultContainer}>
+            <div className={styles.apiTitle}>
+              <span>Result Api Call</span>
+              <button onClick={() => setShow(!show)}>No</button>
+            </div>
+
+            {apiData.map((e) =>
+              e.map((f, i) => (
+                <div key={i} className={styles.resultSquare}>
+                  <div className={styles.infoContainer}>
+                    Info:
+                    <span>Row: {f.row}</span>
+                    <span>Column: {f.col}</span>
+                    <span>Color: {f.active === true ? 'Red' : 'Green'}</span>
+                    <span>IsNowSelected: {f.softActive === true ? 'yes' : 'no'}</span>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
-        ))}
-    </div>
+        )}
+      </div>
+    </>
   );
 }
 

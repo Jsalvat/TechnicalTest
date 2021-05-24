@@ -1,0 +1,42 @@
+.appContainer {
+  display: flex;
+  flex-wrap: wrap;
+  width: 510px;
+  margin: 60px auto;
+}
+
+.resultContainer {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-size: 12px;
+  border-top: 1px solid gray;
+  padding: 10px;
+  justify-content: center;
+  background-color: honeydew;
+}
+
+.apiTitle {
+  font-size: 20px;
+  width: 100%;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+}
+
+.resultSquare {
+  display: flex;
+  box-sizing: border-box;
+  padding: 5px;
+  font-weight: bold;
+}
+
+.infoContainer {
+  border: 1px solid blue;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+}
