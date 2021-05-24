@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import SquareComponent from './Components/Square';
+import SquareComponent, { SquareDataState } from './Components/Square';
 
 export interface Square {
   row: number;
@@ -106,6 +106,10 @@ function App() {
     }
   };
 
+  const handleSquareDataState = (squareDataState: SquareDataState) => {
+    console.log(squareDataState);
+  };
+
   return (
     <div className="appContainer">
       {createdGrid &&
@@ -118,6 +122,7 @@ function App() {
                 handleStarterPoint={handleStarterPoint}
                 handleFinalPoint={handleFinalPoint}
                 handleDoubleClick={handleDoubleClick}
+                handleSquareDataState={handleSquareDataState}
                 key={findex}
                 data={f}
                 dragMode={dragMode}
