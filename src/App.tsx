@@ -50,7 +50,6 @@ function App() {
 
   const handleOngoingPoint = (ongoingSquare: { row: number; col: number }) => {
     if (dragMode === true && initialSquare) {
-      console.log(ongoingSquare, 'ongoingSquare');
       setOngoingSquare(ongoingSquare);
       createdGrid?.map((e) =>
         e.map((f) => {
@@ -67,7 +66,7 @@ function App() {
       setCreatedGrid(createdGrid);
     }
   };
-  const handleFinalPoint = (finalSquare: { row: number; col: number }) => {
+  const handleFinalPoint = () => {
     if (dragMode == true) {
       createdGrid?.map((e) =>
         e.map((f) => {
@@ -93,7 +92,19 @@ function App() {
     }
   };
 
-  console.log(createdGrid);
+  const handleDoubleClick = (clickedSquare: { row: number; col: number; active: boolean }) => {
+    if (dragMode == false && createdGrid) {
+      createdGrid?.map((e) =>
+        e.map((f) => {
+          if (f.row === clickedSquare.row) {
+            f.active = clickedSquare.active;
+          }
+        })
+      );
+      let tempCreatedGrid = createdGrid.slice();
+      setCreatedGrid(tempCreatedGrid);
+    }
+  };
 
   return (
     <div className="appContainer">
@@ -106,6 +117,7 @@ function App() {
                 handleOngoingPoint={handleOngoingPoint}
                 handleStarterPoint={handleStarterPoint}
                 handleFinalPoint={handleFinalPoint}
+                handleDoubleClick={handleDoubleClick}
                 key={findex}
                 data={f}
                 dragMode={dragMode}
