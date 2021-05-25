@@ -5,6 +5,7 @@ import { debounce } from '../Hooks/debounce';
 import styles from './App.module.scss';
 import SquareInfo from '../Components/SquareInfo/SquareInfo';
 import SquareComponent from '../Components/Square/Square';
+import { createGrid, inRange } from '../Utils/Utils';
 
 export interface Square {
   row: number;
@@ -24,19 +25,8 @@ function App() {
   const [show, setShow] = useState<boolean>(true);
 
   useEffect(() => {
-    setCreatedGrid(create(5, 5));
+    setCreatedGrid(createGrid(5, 5));
   }, []);
-
-  const create = (x: number, y: number) => {
-    const grid: Square[][] = [];
-    for (let row = 0; row < x; row++) {
-      grid.push([]);
-      for (let col = 0; col < y; col++) {
-        grid[row].push({ row, col, active: false, softActive: false });
-      }
-    }
-    return grid;
-  };
 
   const handleStarterPoint = (initSquare: { row: number; col: number; active: boolean }) => {
     setInitialSquare(initSquare);
@@ -49,10 +39,6 @@ function App() {
       })
     );
     setDragMode(true);
-  };
-
-  const inRange = (x: number, min: number, max: number) => {
-    return (x - min) * (x - max) <= 0;
   };
 
   const handleOngoingPoint = (ongoingSquare: { row: number; col: number }) => {
@@ -73,6 +59,7 @@ function App() {
       setCreatedGrid(createdGrid);
     }
   };
+
   const handleFinalPoint = () => {
     if (dragMode == true) {
       createdGrid?.map((e) =>
@@ -117,10 +104,10 @@ function App() {
   };
 
   useEffect(() => {
-    verify(createdGrid);
+    updateApiData(createdGrid);
   }, [fireApiCall]);
 
-  const verify = useCallback(
+  const updateApiData = useCallback(
     debounce(() => {
       ApiCall(createdGrid).then((res) => setApiData(res.json));
     }, 500),
