@@ -1,0 +1,13 @@
+.scaffolding {
+  padding: 8px;
+}
+
+.greenContainer {
+  @extend .scaffolding;
+  background: green;
+}
+
+.redContainer {
+  @extend .scaffolding;
+  background: red;
+}

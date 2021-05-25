@@ -16,7 +16,11 @@
   border-top: 1px solid gray;
   padding: 10px;
   justify-content: center;
-  background-color: honeydew;
+  background-color: rgb(233, 233, 233);
+
+  @media only screen and (max-width: 600px) {
+    position: relative;
+  }
 }
 
 .apiTitle {
@@ -27,16 +31,20 @@
   padding: 10px;
 }
 
-.resultSquare {
-  display: flex;
-  box-sizing: border-box;
-  padding: 5px;
-  font-weight: bold;
+.button {
+  background: seashell;
+  border: 1px solid gray;
+  padding: 10px 30px;
+  margin-left: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+
+  &:hover {
+    background: rgb(197, 197, 197);
+  }
 }
 
-.infoContainer {
-  border: 1px solid blue;
-  display: flex;
-  flex-direction: column;
-  padding: 5px;
+.buttonShowContainer {
+  width: 200px;
+  margin: 40px auto;
 }

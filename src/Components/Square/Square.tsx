@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useLongPress } from 'react-use';
-import { Square } from '../App';
+import { Square } from '../../Pages/App';
 import styles from './square.module.scss';
 
 export interface SquareDataState {

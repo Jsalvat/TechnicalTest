@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import ApiCall from './Api/Postman';
+import ApiCall from '../Api/Postman';
 import './App.css';
-import SquareComponent, { SquareDataState } from './Components/Square';
-import { debounce } from './Hooks/debounce';
+import { debounce } from '../Hooks/debounce';
 import styles from './App.module.scss';
+import SquareInfo from '../Components/SquareInfo/SquareInfo';
+import SquareComponent from '../Components/Square/Square';
 
 export interface Square {
   row: number;
@@ -128,7 +129,13 @@ function App() {
 
   return (
     <>
-      {!show && <button onClick={() => setShow(!show)}>Si</button>}
+      {!show && (
+        <div className={styles.buttonShowContainer}>
+          <button className={styles.button} onClick={() => setShow(!show)}>
+            Show API Response
+          </button>
+        </div>
+      )}
       <div className={styles.appContainer}>
         {createdGrid &&
           createdGrid.map((e, eindex) => (
@@ -151,22 +158,12 @@ function App() {
           <div className={styles.resultContainer}>
             <div className={styles.apiTitle}>
               <span>Result Api Call</span>
-              <button onClick={() => setShow(!show)}>No</button>
+              <button className={styles.button} onClick={() => setShow(!show)}>
+                Hide API Response
+              </button>
             </div>
 
-            {apiData.map((e) =>
-              e.map((f, i) => (
-                <div key={i} className={styles.resultSquare}>
-                  <div className={styles.infoContainer}>
-                    Info:
-                    <span>Row: {f.row}</span>
-                    <span>Column: {f.col}</span>
-                    <span>Color: {f.active === true ? 'Red' : 'Green'}</span>
-                    <span>IsNowSelected: {f.softActive === true ? 'yes' : 'no'}</span>
-                  </div>
-                </div>
-              ))
-            )}
+            {apiData.map((e) => e.map((f, i) => <SquareInfo key={i} squareInfo={f} />))}
           </div>
         )}
       </div>
