@@ -15,6 +15,7 @@ export interface Square {
 function App() {
   const [createdGrid, setCreatedGrid] = useState<Square[][] | undefined>();
   const [initialSquare, setInitialSquare] = useState<{ row: number; col: number }>();
+  const [onGoingSquare, setOngoingSquare] = useState<{ row: number; col: number }>();
   const [dragMode, setDragMode] = useState<boolean>(false);
   const [initialActive, setInitialActive] = useState<boolean>(false);
   const [fireApiCall, setFireApiCall] = useState(false);
@@ -55,6 +56,7 @@ function App() {
 
   const handleOngoingPoint = (ongoingSquare: { row: number; col: number }) => {
     if (dragMode === true && initialSquare) {
+      setOngoingSquare(ongoingSquare);
       createdGrid?.map((e) =>
         e.map((f) => {
           if (
