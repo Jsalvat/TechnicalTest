@@ -123,7 +123,7 @@ function App() {
           </button>
         </div>
       )}
-      <div className={styles.appContainer}>
+      <div className={styles.appContainer} data-testid="generalContainer">
         {createdGrid &&
           createdGrid.map((e, eindex) => (
             <div key={eindex}>

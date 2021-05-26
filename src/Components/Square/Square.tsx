@@ -63,6 +63,7 @@ const SquareComponent: React.FC<SquareProps> = ({
 
   return (
     <div
+      data-testid="squareComponent"
       onClick={handleClicks}
       onMouseOver={() => handleOngoingPoint({ row, col })}
       onMouseUp={() => {

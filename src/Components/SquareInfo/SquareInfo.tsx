@@ -8,7 +8,7 @@ interface SquareInfoProps {
 }
 
 const SquareInfo: React.FC<SquareInfoProps> = ({ squareInfo }) => {
-  const { row, col, active, softActive } = squareInfo;
+  const { row, col, active } = squareInfo;
 
   return (
     <div className={styles.resultSquare}>
