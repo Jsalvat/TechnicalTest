@@ -6,7 +6,7 @@ interface SquareInfoColorProps {
 }
 
 const SquareInfoColor: React.FC<SquareInfoColorProps> = ({ color }) => {
-  return <div className={styles[`${color}Container`]} />;
+  return <div data-testid="testColorContainer" className={styles[`${color}Container`]} />;
 };
 
 export default SquareInfoColor;

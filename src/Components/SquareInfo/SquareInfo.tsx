@@ -11,7 +11,7 @@ const SquareInfo: React.FC<SquareInfoProps> = ({ squareInfo }) => {
   const { row, col, active } = squareInfo;
 
   return (
-    <div className={styles.resultSquare}>
+    <div className={styles.resultSquare} data-testid="squareInfo">
       <div className={styles.infoContainer}>
         <span>Row: {row}</span>
         <span>Column: {col}</span>
